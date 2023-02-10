@@ -4,6 +4,9 @@ Description of using manually: https://drive.google.com/file/d/1gzHBIpvxUsFdJ7-l
 
 Description of using in the code: https://github.com/oceanprotocol/ocean.py/blob/main/READMEs/c2d-flow.md
 
+Ocean documentation: https://docs.oceanprotocol.com/building-with-ocean/compute-to-data
+
+
 ## Files description
 
 - test1.py - testing Logistic Regression
