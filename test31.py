@@ -5,9 +5,9 @@ import pickle
 import sys
 from datetime import datetime as dt
 
-# import matplotlib.pyplot as plt
-# import numpy as np
-# import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 # from sklearn import preprocessing
 
 
@@ -29,17 +29,17 @@ if __name__ == "__main__":
 #     package = 'fbprophet'
 #     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
     
-#     feats_read  = ['NOM COMARCA','CONTAMINANT','DATA']
-#     feats_vals  = ['01h','02h','03h','04h','05h','06h','07h','08h','09h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h','24h']
+    feats_read  = ['NOM COMARCA','CONTAMINANT','DATA']
+    feats_vals  = ['01h','02h','03h','04h','05h','06h','07h','08h','09h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h','24h']
 
-#     file_in = get_input()
-#     df1 = pd.read_csv(file_in, usecols = feats_read + feats_vals, 
-#                   dtype = {k: 'float32' for k in feats_vals})
-#     print(df1.shape)
+    file_in = get_input()
+    df1 = pd.read_csv(file_in, usecols = feats_read + feats_vals, 
+                  dtype = {k: 'float32' for k in feats_vals})
+    print(df1.shape)
     
-#     df11 = df1.groupby('NOM COMARCA').size().reset_index()
-#     file_out = "/data/outputs/result" 
-#     df11.to_csv(file_out, index = False)
+    df11 = df1.groupby('NOM COMARCA').size().reset_index()
+    file_out = "/data/outputs/result" 
+    df11.to_csv(file_out, index = False)
     
     print('End date: ', dt.now())
     
