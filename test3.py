@@ -24,9 +24,9 @@ def get_input():
 if __name__ == "__main__":
     print('Start date: ', dt.now())
     filename = get_input()
-    # df1 = pd.read_csv(filename)
-    # print(df1.shape)
-    # df1.groupby('NOM COMARCA').size().reset_index().to_csv('out.csv', index = False)
+    df1 = pd.read_csv(filename)
+    print(df1.shape)
+    df1.groupby('NOM COMARCA').size().reset_index().to_csv('out.csv', index = False)
     print('End date: ', dt.now())
     
     
