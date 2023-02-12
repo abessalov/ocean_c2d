@@ -23,10 +23,14 @@ def get_input():
 
 if __name__ == "__main__":
     print('Start date: ', dt.now())
-    filename = get_input()
-    df1 = pd.read_csv(filename, nrows = 100)
+    file_in = get_input()
+    df1 = pd.read_csv(file_in, nrows = 100)
     print(df1.shape)
-    df1.groupby('NOM COMARCA').size().reset_index().to_csv('out.csv', index = False)
+    
+    df11 = df1.groupby('NOM COMARCA').size().reset_index()
+    file_out = "/data/outputs/result" 
+    df11.to_csv(file_out, index = False)
+    
     print('End date: ', dt.now())
     
     
