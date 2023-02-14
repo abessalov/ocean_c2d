@@ -23,50 +23,50 @@ def get_input():
         return filename
 
     
-def get_data(file_in, pollutant = 'O3'):
-    '''
-    Function to generate hourly time series data for modelling by the given pollutant
-    '''
-    # 1) read data with memory optimizing
-    feats_read  = ['CODI EOI','CONTAMINANT','DATA']
-    feats_vals  = ['01h','02h','03h','04h','05h','06h','07h','08h','09h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h','24h']
-    df = pd.read_csv(file_in, usecols = feats_read + feats_vals, dtype = {k: 'float32' for k in feats_vals})
+# def get_data(file_in, pollutant = 'O3'):
+#     '''
+#     Function to generate hourly time series data for modelling by the given pollutant
+#     '''
+#     # 1) read data with memory optimizing
+#     feats_read  = ['CODI EOI','CONTAMINANT','DATA']
+#     feats_vals  = ['01h','02h','03h','04h','05h','06h','07h','08h','09h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h','24h']
+#     df = pd.read_csv(file_in, usecols = feats_read + feats_vals, dtype = {k: 'float32' for k in feats_vals})
 
-    # 2) preprocessing
-    df = df.drop_duplicates(subset = ['CODI EOI','DATA','CONTAMINANT'])
-    df['DATA'] = pd.to_datetime(df['DATA'], dayfirst = True)
-    df['year'] = df.DATA.dt.year
-    filt = (df.CONTAMINANT == pollutant) & (df.year >= 2013)
-    df = df[filt]
+#     # 2) preprocessing
+#     df = df.drop_duplicates(subset = ['CODI EOI','DATA','CONTAMINANT'])
+#     df['DATA'] = pd.to_datetime(df['DATA'], dayfirst = True)
+#     df['year'] = df.DATA.dt.year
+#     filt = (df.CONTAMINANT == pollutant) & (df.year >= 2013)
+#     df = df[filt]
 
-    # 3) calculate averages by the hour
-    feats1 = ['DATA','CONTAMINANT']
-    df1 = df.groupby(feats1)[feats_vals].mean()
-    df1 = df1.stack().reset_index().rename(columns = {0:'val','level_2':'hour'})
+#     # 3) calculate averages by the hour
+#     feats1 = ['DATA','CONTAMINANT']
+#     df1 = df.groupby(feats1)[feats_vals].mean()
+#     df1 = df1.stack().reset_index().rename(columns = {0:'val','level_2':'hour'})
 
-    str2time = lambda x: ' ' + str(x)[:-1].replace('24','00') + ':00:00'
-    df1['dt_time'] = pd.to_datetime(df1.DATA.astype(str) + df1.hour.map(str2time))
-    del df1['DATA']
-    del df1['hour']
-    # 24h is 00h the next day - correction
-    df1['dt_time'] = df1.dt_time.map(lambda x: x + timedelta(days = 1 if x.hour == 0 else 0))
-    df1 = df1.groupby(['dt_time','CONTAMINANT'])['val'].max().unstack()
+#     str2time = lambda x: ' ' + str(x)[:-1].replace('24','00') + ':00:00'
+#     df1['dt_time'] = pd.to_datetime(df1.DATA.astype(str) + df1.hour.map(str2time))
+#     del df1['DATA']
+#     del df1['hour']
+#     # 24h is 00h the next day - correction
+#     df1['dt_time'] = df1.dt_time.map(lambda x: x + timedelta(days = 1 if x.hour == 0 else 0))
+#     df1 = df1.groupby(['dt_time','CONTAMINANT'])['val'].max().unstack()
 
-    # 4) prepare datasets
-    x = df1[pollutant].reset_index()
-    x.columns = ['ds','y']
+#     # 4) prepare datasets
+#     x = df1[pollutant].reset_index()
+#     x.columns = ['ds','y']
 
-    # features from datetime
-    x['dayofyear'] = x.ds.dt.dayofyear
-    x['dayofweek'] = x.ds.dt.dayofweek
-    x['hour'] = x.ds.dt.hour
+#     # features from datetime
+#     x['dayofyear'] = x.ds.dt.dayofyear
+#     x['dayofweek'] = x.ds.dt.dayofweek
+#     x['hour'] = x.ds.dt.hour
 
-    # x,y
-    x = x.set_index('ds')
-    y = x.y
-    del x['y']
+#     # x,y
+#     x = x.set_index('ds')
+#     y = x.y
+#     del x['y']
 
-    return x,y
+#     return x,y
 
 
 def get_predictions(x,y, t1 = 24*14):
