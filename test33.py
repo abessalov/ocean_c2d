@@ -151,7 +151,7 @@ def get_predictions(x,y, t1 = 24*14):
 if __name__ == "__main__":
     print('Start date: ', dt.now())
     
-    df = get_data(get_input(), pollutant = 'O3')
+    # df = get_data(get_input(), pollutant = 'O3')
     # df_out = get_predictions(df1, t1 = 24)
     # file_out = "/data/outputs/result.csv" 
     # df_out.to_csv(file_out, index = False)
