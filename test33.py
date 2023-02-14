@@ -4,6 +4,7 @@ import os
 import pickle
 import sys
 from datetime import datetime as dt
+from datetime import timedelta
 
 # import matplotlib.pyplot as plt
 import numpy as np
@@ -42,7 +43,6 @@ def get_data(file_in, pollutant = 'O3'):
 
     # 3) calculate averages by the hour
 
-    # convert to long format
     feats1 = ['DATA','CONTAMINANT']
     df1 = df.groupby(feats1)[feats_vals].mean()
     df1 = df1.stack().reset_index().rename(columns = {0:'val','level_2':'hour'})
@@ -53,7 +53,6 @@ def get_data(file_in, pollutant = 'O3'):
     del df1['hour']
     # 24h is 00h the next day - correction
     df1['dt_time'] = df1.dt_time.map(lambda x: x + timedelta(days = 1 if x.hour == 0 else 0))
-    
     df1 = df1.groupby(['dt_time','CONTAMINANT'])['val'].max().unstack()
     
     # 4) prepare dataframe
@@ -73,11 +72,11 @@ def get_data(file_in, pollutant = 'O3'):
     return x,y
 
 
-def get_predictions(x, t1 = 24):
+def get_predictions(x,y, t1 = 24*14):
     '''
     Function to get hourly predictions for the next 14 days by the Xgboost model
     '''
-    # workaround here
+    # workaround here - install library
     package = 'xgboost'
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
     import xgboost as xgb
