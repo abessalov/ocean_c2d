@@ -11,6 +11,10 @@ import numpy as np
 import pandas as pd
 # import xgboost as xgb
 
+# # install packages
+# subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
+# for package in ['pandas','numpy','xgboost']:
+#     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 
 def get_input():
     '''
@@ -87,12 +91,7 @@ def get_data(file_in, pollutant = 'O3'):
     
 if __name__ == "__main__":
     print('Start date: ', dt.now())
-    
-    # # install packages
-    # subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
-    # for package in ['pandas','numpy','xgboost']:
-    #     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-    
+        
     file_in = get_input()
     print(file_in)
     x,y = get_data(file_in, pollutant = 'O3')
