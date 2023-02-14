@@ -7,9 +7,13 @@ from datetime import datetime as dt
 from datetime import timedelta
 
 # import matplotlib.pyplot as plt
+# subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
+for package in ['pandas','numpy','xgboost']:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
 import numpy as np
 import pandas as pd
-
+import xgboost as xgb
 
 def get_input():
     '''
@@ -137,11 +141,7 @@ if __name__ == "__main__":
     del x['y']
 
     ####
-    # 1) install and import xgboost
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
-    package = 'xgboost'
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-    import xgboost as xgb
+
     
     # 2) build model
     x_ = xgb.DMatrix(x.values, label = y)
