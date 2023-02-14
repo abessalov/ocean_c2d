@@ -10,4 +10,5 @@ Ocean documentation: https://docs.oceanprotocol.com/building-with-ocean/compute-
 ## Files description
 
 - test1.py - testing Logistic Regression
-- test2.py - simple script on the Ocean Data Challenge :: Air Quality in Catalonia
+- test2x.py - some simple scripts
+- test3x.py - scripts on the Ocean Data Challenge :: Air Quality in Catalonia
