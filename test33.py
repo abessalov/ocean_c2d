@@ -7,13 +7,6 @@ from datetime import datetime as dt
 from datetime import timedelta
 # import matplotlib.pyplot as plt
 
-# subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
-for package in ['pandas','numpy','xgboost']:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-import numpy as np
-import pandas as pd
-import xgboost as xgb
-
 
 def get_input():
     '''
@@ -90,6 +83,15 @@ def get_predictions(x,y, t1 = 24*14):
     
 if __name__ == "__main__":
     print('Start date: ', dt.now())
+    
+    # install packages
+    # subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
+    for package in ['pandas','numpy','xgboost']:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+    import numpy as np
+    import pandas as pd
+    import xgboost as xgb
+
     
     file_in = get_input()
     print(file_in)
