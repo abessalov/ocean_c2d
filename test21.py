@@ -5,8 +5,8 @@ import sys
 from datetime import datetime as dt
 
 # import matplotlib.pyplot as plt
-# import numpy as np
-# import pandas as pd
+import numpy as np
+import pandas as pd
 # from sklearn import preprocessing
 # from sklearn.linear_model import LogisticRegression
 
@@ -23,10 +23,13 @@ def get_input():
         return filename
 
 if __name__ == "__main__":
-    print('Hello world!')
-    print('File content:')
-    filename = get_input()
-    out = open(filename).read()
-    print(out)
+    # print('Hello world!')
+    # print('File content:')
+    # filename = get_input()
+    # out = open(filename).read()
+    # print(out)
     
-    print(dt.now())
+    print('Start date: ', dt.now())
+    
+
+    print('End date: ', dt.now())
