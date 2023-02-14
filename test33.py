@@ -95,6 +95,7 @@ if __name__ == "__main__":
     
     file_in = get_input()
     print(file_in)
+    import pandas
     # x,y = get_data(file_in, pollutant = 'O3')
     # df_out = get_predictions(x,y, t1 = 24*14)
     # file_out = "/data/outputs/result.csv" 
