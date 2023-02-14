@@ -105,6 +105,7 @@ if __name__ == "__main__":
     df = df.drop_duplicates(subset = ['CODI EOI','DATA','CONTAMINANT'])
     df['DATA'] = pd.to_datetime(df['DATA'], dayfirst = True)
     df['year'] = df.DATA.dt.year
+    pollutant = 'O3'
     filt = (df.CONTAMINANT == pollutant) & (df.year >= 2013)
     df = df[filt]
 
