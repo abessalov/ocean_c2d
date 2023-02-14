@@ -13,6 +13,9 @@ from fbprophet import Prophet
 
 
 def get_input():
+    '''
+    Function to get input filename
+    '''
     dids = os.getenv("DIDS", None)
     if not dids:
         print("No DIDs found in environment. Aborting.")
@@ -23,9 +26,10 @@ def get_input():
         print(f"Reading asset file {filename}.")
         return filename
 
-def generate_data(file_in, pollutant = 'O3'):
+    
+def get_data(file_in, pollutant = 'O3'):
     '''
-    Function to generate monthly time series data for modelling
+    Function to generate monthly time series data for modelling by the given pollutant
     '''
     # 1) read data with memory optimizing
     feats_read  = ['CODI EOI','CONTAMINANT','DATA']
@@ -41,21 +45,35 @@ def generate_data(file_in, pollutant = 'O3'):
     feats1 = ['year_month','CONTAMINANT']
     filt = df.CONTAMINANT == pollutant
     df1 = df[filt].groupby(feats1)[feats_vals].mean().mean(axis = 1).unstack()
+    df1 = df1.reset_index()
+    df1.columns = ['ds','y']
     return df1
+
+
+def get_predictions(x, t1 = 24):
+    '''
+    Function to get predictions for the next 24 months by the Prophet model
+    '''
+    # 1) fit model
+    m = Prophet()
+    m.fit(x)
+
+    # 2) predict
+    df_out = m.make_future_dataframe(periods=t1, freq='m')
+    df_out = m.predict(df_out)
+    feats_out = ['ds','yhat']
+    df_out = df_out[feats_out][-t1:]
+    df_out.columns = ['month','prediction']
+    return df_out
 
 if __name__ == "__main__":
     print('Start date: ', dt.now())
     
-    file_in = get_input()
-    df1 = generate_data(file_in, pollutant = 'O3')
+    df1 = get_data(get_input(), pollutant = 'O3')
+    df_out = get_predictions(df1, t1 = 24)
+    file_out = "/data/outputs/result.csv" 
+    df_ou1.to_csv(file_out, index = False)
     
-    
-#     df11 = df1.groupby('NOM COMARCA').size().reset_index()
-#     file_out = "/data/outputs/result" 
-#     df11.to_csv(file_out, index = False)
-    
-#     m = Prophet()
-
     print('End date: ', dt.now())
     
     
