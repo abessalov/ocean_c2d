@@ -189,7 +189,7 @@ if __name__ == "__main__":
     pred = model_xgb.predict(x_)
     x['prediction'] = pred
     df_out = x['prediction']
-
+    print(df_out.shape)
     
     print('End date: ', dt.now())
     
