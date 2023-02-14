@@ -39,7 +39,7 @@ def get_data(file_in, pollutant = 'O3'):
     df = df[filt]
     
     # 2) preprocessing
-    df.drop_duplicates(subset = ['CODI EOI','DATA','CONTAMINANT'], inplace = True)
+    df = df.drop_duplicates(subset = ['CODI EOI','DATA','CONTAMINANT'])
     df['DATA'] = pd.to_datetime(df['DATA'], dayfirst = True)
     df['year_month'] = pd.to_datetime(df['DATA'].astype(str).str[:7] + '-01')
     return df
