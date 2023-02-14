@@ -71,9 +71,9 @@ if __name__ == "__main__":
     print('Start date: ', dt.now())
     
     df1 = get_data(get_input(), pollutant = 'O3')
-    df_out = get_predictions(df1, t1 = 24)
-    file_out = "/data/outputs/result.csv" 
-    df_ou1.to_csv(file_out, index = False)
+    # df_out = get_predictions(df1, t1 = 24)
+    file_out = "/data/outputs/result" 
+    df1.to_csv(file_out, index = False)
     
     print('End date: ', dt.now())
     
