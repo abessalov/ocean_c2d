@@ -69,16 +69,16 @@ def get_input():
 #     return x,y
 
 
-def get_predictions(x,y, t1 = 24*14):
-    '''
-    Function to get hourly predictions for the next 14 days by the Xgboost model
-    '''
-    # workaround here - install library
-    package = 'xgboost'
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-    import xgboost as xgb
+# def get_predictions(x,y, t1 = 24*14):
+#     '''
+#     Function to get hourly predictions for the next 14 days by the Xgboost model
+#     '''
+#     # workaround here - install library
+#     package = 'xgboost'
+#     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+#     import xgboost as xgb
     
-    return 1
+#     return 1
 
     
 if __name__ == "__main__":
