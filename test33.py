@@ -185,6 +185,12 @@ if __name__ == "__main__":
     x = x.set_index('ds')
     y = x.y
     del x['y']
+
+    ####
+    package = 'xgboost'
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+    import xgboost as xgb
+    
     
     print('End date: ', dt.now())
     
