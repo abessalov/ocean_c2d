@@ -24,7 +24,6 @@ def get_input():
         return filename
 
 if __name__ == "__main__":
-
     print('Start date: ', dt.now())
     
     feats_read  = ['NOM COMARCA','CONTAMINANT','DATA']
