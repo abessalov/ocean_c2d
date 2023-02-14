@@ -41,36 +41,36 @@ def get_data(file_in, pollutant = 'O3'):
     df['year'] = df.DATA.dt.year
     filt = (df.CONTAMINANT == pollutant) & (df.year >= 2013)
     df = df[filt]
-    return df
+    # return df
 
-#     # 3) calculate averages by the hour
-#     feats1 = ['DATA','CONTAMINANT']
-#     df1 = df.groupby(feats1)[feats_vals].mean()
-#     df1 = df1.stack().reset_index().rename(columns = {0:'val','level_2':'hour'})
+    # 3) calculate averages by the hour
+    feats1 = ['DATA','CONTAMINANT']
+    df1 = df.groupby(feats1)[feats_vals].mean()
+    df1 = df1.stack().reset_index().rename(columns = {0:'val','level_2':'hour'})
 
-#     str2time = lambda x: ' ' + str(x)[:-1].replace('24','00') + ':00:00'
-#     df1['dt_time'] = pd.to_datetime(df1.DATA.astype(str) + df1.hour.map(str2time))
-#     del df1['DATA']
-#     del df1['hour']
-#     # 24h is 00h the next day - correction
-#     df1['dt_time'] = df1.dt_time.map(lambda x: x + timedelta(days = 1 if x.hour == 0 else 0))
-#     df1 = df1.groupby(['dt_time','CONTAMINANT'])['val'].max().unstack()
+    str2time = lambda x: ' ' + str(x)[:-1].replace('24','00') + ':00:00'
+    df1['dt_time'] = pd.to_datetime(df1.DATA.astype(str) + df1.hour.map(str2time))
+    del df1['DATA']
+    del df1['hour']
+    # 24h is 00h the next day - correction
+    df1['dt_time'] = df1.dt_time.map(lambda x: x + timedelta(days = 1 if x.hour == 0 else 0))
+    df1 = df1.groupby(['dt_time','CONTAMINANT'])['val'].max().unstack()
 
-#     # 4) prepare datasets
-#     x = df1[pollutant].reset_index()
-#     x.columns = ['ds','y']
+    # 4) prepare datasets
+    x = df1[pollutant].reset_index()
+    x.columns = ['ds','y']
 
-#     # features from datetime
-#     x['dayofyear'] = x.ds.dt.dayofyear
-#     x['dayofweek'] = x.ds.dt.dayofweek
-#     x['hour'] = x.ds.dt.hour
+    # features from datetime
+    x['dayofyear'] = x.ds.dt.dayofyear
+    x['dayofweek'] = x.ds.dt.dayofweek
+    x['hour'] = x.ds.dt.hour
 
-#     # x,y
-#     x = x.set_index('ds')
-#     y = x.y
-#     del x['y']
+    # x,y
+    x = x.set_index('ds')
+    y = x.y
+    del x['y']
 
-#     return x,y
+    return x,y
 
 
 def get_predictions(x,y, t1 = 24*14):
@@ -151,8 +151,8 @@ def get_predictions(x,y, t1 = 24*14):
 if __name__ == "__main__":
     print('Start date: ', dt.now())
     
-#     file_in = get_input()
-#     df1 = get_data(file_in, pollutant = 'O3')
+    # file_in = get_input()
+    # df1 = get_data(file_in, pollutant = 'O3')
     
     # 1) read data with memory optimizing
     feats_read  = ['CODI EOI','CONTAMINANT','DATA']
