@@ -40,6 +40,7 @@ def get_data(file_in, pollutant = 'O3'):
     df.drop_duplicates(subset = ['CODI EOI','DATA','CONTAMINANT'], inplace = True)
     df['DATA'] = pd.to_datetime(df['DATA'], dayfirst = True)
     df['year_month'] = pd.to_datetime(df['DATA'].astype(str).str[:7] + '-01')
+    return df
     
     # 3) calculate averages by the year_month
     feats1 = ['year_month','CONTAMINANT']
@@ -72,8 +73,8 @@ if __name__ == "__main__":
     
     df1 = get_data(get_input(), pollutant = 'O3')
     # df_out = get_predictions(df1, t1 = 24)
-    file_out = "/data/outputs/result" 
-    df1.to_csv(file_out, index = False)
+    # file_out = "/data/outputs/result" 
+    # df1.to_csv(file_out, index = False)
     
     print('End date: ', dt.now())
     
