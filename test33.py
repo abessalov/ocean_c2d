@@ -85,7 +85,7 @@ if __name__ == "__main__":
     print('Start date: ', dt.now())
     
     # install packages
-    # subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
     for package in ['pandas','numpy','xgboost']:
         subprocess.check_call([sys.executable, "-m", "pip", "install", package])
     import numpy as np
