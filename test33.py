@@ -41,7 +41,6 @@ def get_data(file_in, pollutant = 'O3'):
     df['year'] = df.DATA.dt.year
     filt = (df.CONTAMINANT == pollutant) & (df.year >= 2013)
     df = df[filt]
-    # return df
 
     # 3) calculate averages by the hour
     feats1 = ['DATA','CONTAMINANT']
@@ -77,23 +76,12 @@ def get_predictions(x,y, t1 = 24*14):
     '''
     Function to get hourly predictions for the next 14 days by the Xgboost model
     '''
-    return 0
     # workaround here - install library
-    # package = 'xgboost'
-    # subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-    # import xgboost as xgb
+    package = 'xgboost'
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+    import xgboost as xgb
     
-#     # 1) fit model
-#     m = Prophet()
-#     m.fit(x)
-
-#     # 2) predict
-#     df_out = m.make_future_dataframe(periods=t1, freq='m')
-#     df_out = m.predict(df_out)
-#     feats_out = ['ds','yhat']
-#     df_out = df_out[feats_out][-t1:]
-#     df_out.columns = ['month','prediction']
-#     return df_out
+    return 1
 
 
 #     # 2) build model
@@ -153,8 +141,7 @@ if __name__ == "__main__":
     
     file_in = get_input()
     x,y = get_data(file_in, pollutant = 'O3')
-    
-    # df_out = get_predictions(df1, t1 = 24)
+    df_out = get_predictions(x,y, t1 = 24*14)
     # file_out = "/data/outputs/result.csv" 
     # df_out.to_csv(file_out, index = False)
     
