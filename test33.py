@@ -41,6 +41,7 @@ def get_data(file_in, pollutant = 'O3'):
     df['year'] = df.DATA.dt.year
     filt = (df.CONTAMINANT == pollutant) & (df.year >= 2013)
     df = df[filt]
+    return df
 
     # 3) calculate averages by the hour
     feats1 = ['DATA','CONTAMINANT']
@@ -55,7 +56,7 @@ def get_data(file_in, pollutant = 'O3'):
     df1['dt_time'] = df1.dt_time.map(lambda x: x + timedelta(days = 1 if x.hour == 0 else 0))
     df1 = df1.groupby(['dt_time','CONTAMINANT'])['val'].max().unstack()
     
-    # 4) prepare dataframe
+    # 4) prepare datasets
     x = df1[pollutant].reset_index()
     x.columns = ['ds','y']
 
@@ -149,7 +150,7 @@ def get_predictions(x,y, t1 = 24*14):
 if __name__ == "__main__":
     print('Start date: ', dt.now())
     
-    x,y = get_data(get_input(), pollutant = 'O3')
+    df = get_data(get_input(), pollutant = 'O3')
     # df_out = get_predictions(df1, t1 = 24)
     # file_out = "/data/outputs/result.csv" 
     # df_out.to_csv(file_out, index = False)
