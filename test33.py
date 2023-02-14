@@ -187,6 +187,7 @@ if __name__ == "__main__":
     del x['y']
 
     ####
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
     package = 'xgboost'
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
     import xgboost as xgb
