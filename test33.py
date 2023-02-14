@@ -5,15 +5,15 @@ import pickle
 import sys
 from datetime import datetime as dt
 from datetime import timedelta
-
 # import matplotlib.pyplot as plt
+
 # subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
 for package in ['pandas','numpy','xgboost']:
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
 import numpy as np
 import pandas as pd
 import xgboost as xgb
+
 
 def get_input():
     '''
@@ -92,6 +92,7 @@ if __name__ == "__main__":
     print('Start date: ', dt.now())
     
     file_in = get_input()
+    print(file_in)
     # x,y = get_data(file_in, pollutant = 'O3')
     # df_out = get_predictions(x,y, t1 = 24*14)
     
@@ -104,7 +105,8 @@ if __name__ == "__main__":
     feats_read  = ['CODI EOI','CONTAMINANT','DATA']
     feats_vals  = ['01h','02h','03h','04h','05h','06h','07h','08h','09h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h','24h']
     df = pd.read_csv(file_in, usecols = feats_read + feats_vals, dtype = {k: 'float32' for k in feats_vals})
-
+    print(df.shape)
+    
     # 2) preprocessing
     df = df.drop_duplicates(subset = ['CODI EOI','DATA','CONTAMINANT'])
     df['DATA'] = pd.to_datetime(df['DATA'], dayfirst = True)
@@ -140,10 +142,11 @@ if __name__ == "__main__":
     y = x.y
     del x['y']
 
+    print(x.shape)
     ####
 
     
-    # 2) build model
+    # 1) build model
     x_ = xgb.DMatrix(x.values, label = y)
 
     params = {
@@ -177,7 +180,7 @@ if __name__ == "__main__":
                  verbose_eval=1000)
 
 
-    # 3) predict
+    # 2) predict
 
     # features for new dataset
     x = pd.DataFrame({'ds': pd.date_range(start = '2023-02-15', periods = t1, freq = 'h')})
