@@ -13,8 +13,9 @@ import pandas as pd
 
 # install packages
 subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
-for package in ['pandas','numpy','xgboost'][2:]:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "numpy","--upgrade"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "pandas","--upgrade"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "xgboost"])
 
 def get_input():
     '''
