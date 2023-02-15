@@ -10,7 +10,9 @@ from datetime import timedelta
 
 # install packages
 subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
-subprocess.check_call([sys.executable, "-m", "pip", "install", "numpy","--upgrade"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "lightgbm"])
+
+# subprocess.check_call([sys.executable, "-m", "pip", "install", "numpy","--upgrade"])
 # subprocess.check_call([sys.executable, "-m", "pip", "install", "pandas","--upgrade"])
 # subprocess.check_call([sys.executable, "-m", "pip", "install", "xgboost"])
 
