@@ -11,7 +11,7 @@ from datetime import timedelta
 # install packages
 subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
 subprocess.check_call([sys.executable, "-m", "pip", "install", "wheel"])
-subprocess.check_call([sys.executable, "-m", "pip", "install", "lightgbm"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "-u", "numpy","--upgrade"])
 
 # subprocess.check_call([sys.executable, "-m", "pip", "install", "numpy","--upgrade"])
 # subprocess.check_call([sys.executable, "-m", "pip", "install", "pandas","--upgrade"])
