@@ -8,14 +8,14 @@ from datetime import timedelta
 # import matplotlib.pyplot as plt
 
 
-# # install packages
-# subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
+# install packages
+subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
 # subprocess.check_call([sys.executable, "-m", "pip", "install", "wheel"])
 # subprocess.check_call([sys.executable, "-m", "pip", "install", "-u", "numpy","--upgrade"])
 
-# subprocess.check_call([sys.executable, "-m", "pip", "install", "numpy","--upgrade"])
-# subprocess.check_call([sys.executable, "-m", "pip", "install", "pandas","--upgrade"])
-# subprocess.check_call([sys.executable, "-m", "pip", "install", "xgboost"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "numpy"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "pandas"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "xgboost"])
 
 import numpy as np
 import pandas as pd
@@ -101,8 +101,9 @@ if __name__ == "__main__":
     print(file_in)
     # x,y = get_data(file_in, pollutant = 'O3')
     # df_out = get_predictions(x,y, t1 = 24*14)
-    # file_out = "/data/outputs/result.csv" 
-    # df_out.to_csv(file_out, index = False)
+    # file_out = "/data/outputs/result.csv"
+    df_out = pd.DataFrame([1,2,3])
+    df_out.to_csv(file_out, index = False)
     # print(x.shape)
     
 
