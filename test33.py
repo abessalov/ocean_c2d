@@ -8,18 +8,18 @@ from datetime import timedelta
 # import matplotlib.pyplot as plt
 
 
+
 # install packages
 subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
-# subprocess.check_call([sys.executable, "-m", "pip", "install", "wheel"])
-# subprocess.check_call([sys.executable, "-m", "pip", "install", "-u", "numpy","--upgrade"])
-
 subprocess.check_call([sys.executable, "-m", "pip", "install", "numpy"])
 subprocess.check_call([sys.executable, "-m", "pip", "install", "pandas"])
 subprocess.check_call([sys.executable, "-m", "pip", "install", "xgboost"])
+# there is an error here - to execute on the image with xgboost installed 
 
 import numpy as np
 import pandas as pd
 import xgboost as xgb
+
 
 def get_input():
     '''
@@ -82,16 +82,57 @@ def get_data(file_in, pollutant = 'O3'):
     return x,y
 
 
-# def get_predictions(x,y, t1 = 24*14):
-#     '''
-#     Function to get hourly predictions for the next 14 days by the Xgboost model
-#     '''
-#     # workaround here - install library
-#     package = 'xgboost'
-#     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-#     import xgboost as xgb
-    
-#     return 1
+def get_predictions(x,y, t1 = 24*14):
+    '''
+    Function to get hourly predictions for the next 14 days by the Xgboost model
+    '''
+    # 1) build model
+    x_ = xgb.DMatrix(x.values, label = y)
+
+    params = {
+            'booster': 'gbtree',
+            'tree_method': 'hist',
+            'objective': 'reg:squarederror', 
+            # 'eval_metric': 'logloss',
+            'eta': 0.01,
+            'max_depth': 5,  # -1 means no limit
+            'subsample': 1,  # Subsample ratio of the training instance.
+            'colsample_bytree': 1,  # Subsample ratio of columns when constructing each tree.
+            'reg_alpha': 0,  # L1 regularization term on weights
+            'reg_lambda': 0,  # L2 regularization term on weights
+            'nthread': -1,
+            'verbosity': 0
+        }       
+
+    early_stopping_rounds = 10
+    num_boost_round       = 500
+
+    evals_results = dict()
+    model_xgb = xgb.train(params, 
+                 x_, 
+                 evals=[
+                     (x_,'train'), 
+                     # (xv_,'valid'),
+                 ], 
+                 evals_result=evals_results, 
+                 num_boost_round=num_boost_round,
+                 early_stopping_rounds=early_stopping_rounds,
+                 verbose_eval=1000)
+
+
+    # 2) predict
+    # features for new dataset
+    x = pd.DataFrame({'ds': pd.date_range(start = '2023-02-15', periods = t1, freq = 'h')})
+    x['dayofyear'] = x.ds.dt.dayofyear
+    x['dayofweek'] = x.ds.dt.dayofweek
+    x['hour'] = x.ds.dt.hour
+    x = x.set_index('ds')
+
+    x_ = xgb.DMatrix(x.values)
+    pred = model_xgb.predict(x_)
+    x['prediction'] = pred
+    df_out = x['prediction'].reset_index()
+    return df_out
 
     
 if __name__ == "__main__":
@@ -99,67 +140,9 @@ if __name__ == "__main__":
         
     file_in = get_input()
     print(file_in)
-    # x,y = get_data(file_in, pollutant = 'O3')
-    # df_out = get_predictions(x,y, t1 = 24*14)
-    # file_out = "/data/outputs/result.csv"
-    df_out = pd.DataFrame([1,2,3])
+    x,y = get_data(file_in, pollutant = 'O3')
+    df_out = get_predictions(x,y, t1 = 24*14)
+    file_out = "/data/outputs/result.csv" 
     df_out.to_csv(file_out, index = False)
-    # print(x.shape)
-    
 
-#     # 1) build model
-#     x_ = xgb.DMatrix(x.values, label = y)
-
-#     params = {
-#             'booster': 'gbtree',
-#             'tree_method': 'hist',
-#             'objective': 'reg:squarederror', 
-#             # 'eval_metric': 'logloss',
-#             'eta': 0.01,
-#             'max_depth': 5,  # -1 means no limit
-#             'subsample': 1,  # Subsample ratio of the training instance.
-#             'colsample_bytree': 1,  # Subsample ratio of columns when constructing each tree.
-#             'reg_alpha': 0,  # L1 regularization term on weights
-#             'reg_lambda': 0,  # L2 regularization term on weights
-#             'nthread': -1,
-#             'verbosity': 0
-#         }       
-
-#     early_stopping_rounds = 10
-#     num_boost_round       = 500
-
-#     evals_results = dict()
-#     model_xgb = xgb.train(params, 
-#                  x_, 
-#                  evals=[
-#                      (x_,'train'), 
-#                      # (xv_,'valid'),
-#                  ], 
-#                  evals_result=evals_results, 
-#                  num_boost_round=num_boost_round,
-#                  early_stopping_rounds=early_stopping_rounds,
-#                  verbose_eval=1000)
-
-
-#     # 2) predict
-
-#     # features for new dataset
-#     x = pd.DataFrame({'ds': pd.date_range(start = '2023-02-15', periods = t1, freq = 'h')})
-#     x['dayofyear'] = x.ds.dt.dayofyear
-#     x['dayofweek'] = x.ds.dt.dayofweek
-#     x['hour'] = x.ds.dt.hour
-#     x = x.set_index('ds')
-
-#     x_ = xgb.DMatrix(x.values)
-#     pred = model_xgb.predict(x_)
-#     x['prediction'] = pred
-#     df_out = x['prediction']
-#     print(df_out.shape)
-    
     print('End date: ', dt.now())
-    
-    
-    
-
-
-
