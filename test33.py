@@ -7,15 +7,16 @@ from datetime import datetime as dt
 from datetime import timedelta
 # import matplotlib.pyplot as plt
 
-import numpy as np
-import pandas as pd
-# import xgboost as xgb
 
 # install packages
 subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
 subprocess.check_call([sys.executable, "-m", "pip", "install", "numpy","--upgrade"])
-subprocess.check_call([sys.executable, "-m", "pip", "install", "pandas","--upgrade"])
-subprocess.check_call([sys.executable, "-m", "pip", "install", "xgboost"])
+# subprocess.check_call([sys.executable, "-m", "pip", "install", "pandas","--upgrade"])
+# subprocess.check_call([sys.executable, "-m", "pip", "install", "xgboost"])
+
+import numpy as np
+import pandas as pd
+# import xgboost as xgb
 
 def get_input():
     '''
